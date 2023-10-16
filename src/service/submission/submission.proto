@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package server.post;
+
+option go_package = "github.com/kwanok/minsim-api/service/reddit/submission";
+
+service Submission {
+  rpc NewSubmission(NewSubmissionRequest) returns (NewSubmissionResponse);
+}
+
+message NewSubmissionRequest {
+  string id = 1;
+  string author = 2;
+  string author_flair_text = 3;
+  bool clicked = 4;
+  int64 created_utc = 5;
+  bool is_original_content = 6;
+  bool is_self = 7;
+  string link_flair_text = 8;
+  bool locked = 9;
+  string name = 10;
+  int64 num_comments = 11;
+  bool over_18 = 12;
+  string permalink = 13;
+  int64 score = 14;
+  string selftext = 15;
+  string subreddit = 16;
+  string subreddit_id = 17;
+  string title = 18;
+  float upvote_ratio = 19;
+  string url = 20;
+}
+
+message NewSubmissionResponse {
+  string id = 1;
+}

@@ -2,19 +2,28 @@ syntax = "proto3";
 
 package server.comment;
 
-option go_package = "github.com/kwanok/minsim-api/server/comment";
+option go_package = "github.com/kwanok/minsim-api/service/comment";
 
 service Comment {
   rpc NewComment(NewCommentRequest) returns (NewCommentResponse);
 }
 
 message NewCommentRequest {
-  string content = 1;
+  string id = 1;
   string author = 2;
-  string subreddit = 3;
-  int64 created_at = 4;
-  string id = 5;
-  string subreddit_id = 6;
+  string body = 3;
+  string body_html = 4;
+  int64 created_utc = 5;
+  string distinguished = 6;
+  bool edited = 7;
+  bool is_submitter = 8;
+  string link_id = 9;
+  string parent_id = 10;
+  string permalink = 11;
+  bool stickied = 12;
+  string submission = 13;
+  string subreddit = 14;
+  string subreddit_id = 15;
 }
 
 message NewCommentResponse {

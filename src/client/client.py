@@ -7,31 +7,53 @@ from asyncprawcore import TooManyRequests
 
 from src.config.config import Config
 from src.redis.client import RedisClient
-from src.redis.queue import RedisPubSub, Channel
+from src.redis.queue import Channel, RedisPubSub
 from src.service.comment import comment_pb2, comment_pb2_grpc
-from src.service.post import post_pb2_grpc, post_pb2
+from src.service.submission import submission_pb2, submission_pb2_grpc
 
 
 def new_comment_request(comment):
     return comment_pb2.NewCommentRequest(
         id=str(comment.id),
         author=str(comment.author),
-        content=str(comment.body),
+        body=str(comment.body),
+        body_html=str(comment.body_html),
+        created_utc=int(comment.created_utc),
+        distinguished=str(comment.distinguished),
+        edited=bool(comment.edited),
+        is_submitter=comment.is_submitter,
+        link_id=str(comment.link_id),
+        parent_id=str(comment.parent_id),
+        permalink=str(comment.permalink),
+        stickied=bool(comment.stickied),
+        submission=str(comment.submission),
         subreddit=str(comment.subreddit),
         subreddit_id=str(comment.subreddit_id),
-        created_at=int(comment.created_utc),
     )
 
 
-def new_post_request(post):
-    return post_pb2.NewPostRequest(
-        id=str(post.id),
-        author=str(post.author),
-        title=str(post.title),
-        content=str(post.selftext),
-        subreddit=str(post.subreddit),
-        created_at=int(post.created_utc),
-        url=str(post.url),
+def new_submission_request(submission):
+    return submission_pb2.NewSubmissionRequest(
+        id=str(submission.id),
+        author=str(submission.author),
+        author_flair_text=str(submission.author_flair_text),
+        clicked=bool(submission.clicked),
+        created_utc=int(submission.created_utc),
+        is_original_content=bool(submission.is_original_content),
+        is_self=bool(submission.is_self),
+        link_flair_text=str(submission.link_flair_text),
+        locked=bool(submission.locked),
+        name=str(submission.name),
+        num_comments=int(submission.num_comments),
+        over_18=bool(submission.over_18),
+        permalink=str(submission.permalink),
+        score=int(submission.score),
+        selftext=str(submission.selftext),
+        subreddit=str(submission.subreddit),
+        subreddit_id=str(submission.subreddit_id),
+        title=str(submission.title),
+        upvote_ratio=float(submission.upvote_ratio),
+        url=str(submission.url),
     )
 
 
@@ -62,7 +84,7 @@ class RedditClient:
             tg.create_task(self.get_subreddit_comment_stream(subreddit))
             tg.create_task(self.get_subreddit_submission_stream(subreddit))
             tg.create_task(self.subscribe_failed_queue(Channel.Comment))
-            tg.create_task(self.subscribe_failed_queue(Channel.Post))
+            tg.create_task(self.subscribe_failed_queue(Channel.Submission))
 
     async def get_subreddit_comment_stream(self, subreddit):
         logging.info(f"getting subreddit stream for {subreddit}")
@@ -91,14 +113,16 @@ class RedditClient:
 
         with grpc.insecure_channel(self.api_host) as channel:
             try:
-                async for submission in self.subreddit.stream.submissions(skip_existing=True):
-                    stub = post_pb2_grpc.PostStub(channel)
+                async for submission in self.subreddit.stream.submissions(
+                    skip_existing=True
+                ):
+                    stub = submission_pb2_grpc.SubmissionStub(channel)
 
                     try:
-                        stub.NewPost(new_post_request(submission))
+                        stub.NewSubmission(new_submission_request(submission))
                     except Exception as e:
                         await self.failed_queue.publish(
-                            channel=Channel.Post, message=str(submission.id)
+                            channel=Channel.Submission, message=str(submission.id)
                         )
 
                         logging.error(e)
@@ -118,8 +142,8 @@ class RedditClient:
 
             if channel == Channel.Comment:
                 await self.retry_new_comment(message["data"].decode("utf-8"))
-            elif channel == Channel.Post:
-                await self.retry_new_post(message["data"].decode("utf-8"))
+            elif channel == Channel.Submission:
+                await self.retry_new_submission(message["data"].decode("utf-8"))
 
     async def retry_new_comment(self, comment_id) -> bool:
         try:
@@ -144,22 +168,22 @@ class RedditClient:
 
             return True
 
-    async def retry_new_post(self, post_id) -> bool:
+    async def retry_new_submission(self, submission_id) -> bool:
         try:
-            post = await self.reddit.submission(post_id)
+            submission = await self.reddit.submission(submission_id)
         except TooManyRequests:
             await asyncio.sleep(60)
-            return await self.retry_new_post(post_id)
+            return await self.retry_new_submission(submission_id)
 
         with grpc.insecure_channel(self.api_host) as channel:
-            stub = post_pb2_grpc.PostStub(channel)
+            stub = submission_pb2_grpc.SubmissionStub(channel)
 
             try:
-                stub.NewPost(new_post_request(post))
-                logging.info(f"successfully published post {post.id}")
+                stub.NewSubmission(new_submission_request(submission))
+                logging.info(f"successfully published submission {submission.id}")
             except Exception as e:
                 await self.failed_queue.publish(
-                    channel=Channel.Post, message=str(post.id)
+                    channel=Channel.Submission, message=str(submission.id)
                 )
 
                 logging.error(e)

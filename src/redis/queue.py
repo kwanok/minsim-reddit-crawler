@@ -5,7 +5,7 @@ from redis.asyncio.client import PubSub
 
 
 class Channel(str, Enum):
-    Post = "post"
+    Submission = "submission"
     Comment = "comment"
 
 

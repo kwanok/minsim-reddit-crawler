@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package server.comment;
+
+option go_package = "github.com/kwanok/minsim-api/server/comment";
+
+service Comment {
+  rpc NewComment(NewCommentRequest) returns (NewCommentResponse);
+}
+
+message NewCommentRequest {
+  string content = 1;
+  string author = 2;
+  string subreddit = 3;
+  int64 created_at = 4;
+  string id = 5;
+  string subreddit_id = 6;
+}
+
+message NewCommentResponse {
+  string id = 1;
+}

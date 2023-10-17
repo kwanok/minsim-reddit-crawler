@@ -12,3 +12,23 @@ generate-comment-proto:
 		--grpc_python_out=./src/service/comment  \
 		./src/service/comment/comment.proto
 
+.PHONY: image
+image:
+	docker build -t ghcr.io/kwanok/minsim-reddit-crawler:latest .
+
+.PHONY: push
+push:
+	docker push ghcr.io/kwanok/minsim-reddit-crawler:latest
+
+.PHONY: format
+format:
+	poetry run black .
+	poetry run isort .
+	poetry run ruff check . --fix
+
+.PHONY: ci
+ci: format image push
+
+.PHONY: run
+run:
+	poetry run python -m src.main

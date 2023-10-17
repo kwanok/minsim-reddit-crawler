@@ -6,7 +6,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf.internal import builder as _builder
-
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -14,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10submission.proto\x12\x0bserver.post\"\x8e\x03\n\x14NewSubmissionRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0e\n\x06\x61uthor\x18\x02 \x01(\t\x12\x19\n\x11\x61uthor_flair_text\x18\x03 \x01(\t\x12\x0f\n\x07\x63licked\x18\x04 \x01(\x08\x12\x13\n\x0b\x63reated_utc\x18\x05 \x01(\x03\x12\x1b\n\x13is_original_content\x18\x06 \x01(\x08\x12\x0f\n\x07is_self\x18\x07 \x01(\x08\x12\x17\n\x0flink_flair_text\x18\x08 \x01(\t\x12\x0e\n\x06locked\x18\t \x01(\x08\x12\x0c\n\x04name\x18\n \x01(\t\x12\x14\n\x0cnum_comments\x18\x0b \x01(\x03\x12\x0f\n\x07over_18\x18\x0c \x01(\x08\x12\x11\n\tpermalink\x18\r \x01(\t\x12\r\n\x05score\x18\x0e \x01(\x03\x12\x10\n\x08selftext\x18\x0f \x01(\t\x12\x11\n\tsubreddit\x18\x10 \x01(\t\x12\x14\n\x0csubreddit_id\x18\x11 \x01(\t\x12\r\n\x05title\x18\x12 \x01(\t\x12\x14\n\x0cupvote_ratio\x18\x13 \x01(\x02\x12\x0b\n\x03url\x18\x14 \x01(\t\"#\n\x15NewSubmissionResponse\x12\n\n\x02id\x18\x01 \x01(\t2d\n\nSubmission\x12V\n\rNewSubmission\x12!.server.post.NewSubmissionRequest\x1a\".server.post.NewSubmissionResponseB8Z6github.com/kwanok/minsim-api/service/reddit/submissionb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10submission.proto\x12\x19service.reddit.submission\"\x8e\x03\n\x14NewSubmissionRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0e\n\x06\x61uthor\x18\x02 \x01(\t\x12\x19\n\x11\x61uthor_flair_text\x18\x03 \x01(\t\x12\x0f\n\x07\x63licked\x18\x04 \x01(\x08\x12\x13\n\x0b\x63reated_utc\x18\x05 \x01(\x03\x12\x1b\n\x13is_original_content\x18\x06 \x01(\x08\x12\x0f\n\x07is_self\x18\x07 \x01(\x08\x12\x17\n\x0flink_flair_text\x18\x08 \x01(\t\x12\x0e\n\x06locked\x18\t \x01(\x08\x12\x0c\n\x04name\x18\n \x01(\t\x12\x14\n\x0cnum_comments\x18\x0b \x01(\x03\x12\x0f\n\x07over_18\x18\x0c \x01(\x08\x12\x11\n\tpermalink\x18\r \x01(\t\x12\r\n\x05score\x18\x0e \x01(\x03\x12\x10\n\x08selftext\x18\x0f \x01(\t\x12\x11\n\tsubreddit\x18\x10 \x01(\t\x12\x14\n\x0csubreddit_id\x18\x11 \x01(\t\x12\r\n\x05title\x18\x12 \x01(\t\x12\x14\n\x0cupvote_ratio\x18\x13 \x01(\x02\x12\x0b\n\x03url\x18\x14 \x01(\t\"#\n\x15NewSubmissionResponse\x12\n\n\x02id\x18\x01 \x01(\t2\x80\x01\n\nSubmission\x12r\n\rNewSubmission\x12/.service.reddit.submission.NewSubmissionRequest\x1a\x30.service.reddit.submission.NewSubmissionResponseB8Z6github.com/kwanok/minsim-api/service/reddit/submissionb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -22,10 +21,10 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'submission_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
   DESCRIPTOR._serialized_options = b'Z6github.com/kwanok/minsim-api/service/reddit/submission'
-  _globals['_NEWSUBMISSIONREQUEST']._serialized_start=34
-  _globals['_NEWSUBMISSIONREQUEST']._serialized_end=432
-  _globals['_NEWSUBMISSIONRESPONSE']._serialized_start=434
-  _globals['_NEWSUBMISSIONRESPONSE']._serialized_end=469
-  _globals['_SUBMISSION']._serialized_start=471
-  _globals['_SUBMISSION']._serialized_end=571
+  _globals['_NEWSUBMISSIONREQUEST']._serialized_start=48
+  _globals['_NEWSUBMISSIONREQUEST']._serialized_end=446
+  _globals['_NEWSUBMISSIONRESPONSE']._serialized_start=448
+  _globals['_NEWSUBMISSIONRESPONSE']._serialized_end=483
+  _globals['_SUBMISSION']._serialized_start=486
+  _globals['_SUBMISSION']._serialized_end=614
 # @@protoc_insertion_point(module_scope)

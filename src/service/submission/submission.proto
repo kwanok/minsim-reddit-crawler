@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package server.post;
+package service.reddit.submission;
 
 option go_package = "github.com/kwanok/minsim-api/service/reddit/submission";
 
